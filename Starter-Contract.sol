@@ -23,7 +23,7 @@ contract StarterHelloContract {
     }
     mapping(address=>User) public userMap;
     
-    function addGreeting(string memory userName, string memory greeting) external returns (string memory) {
+    function addGreeting(string memory userName, string memory greeting) external payable valueCheck returns (string memory)  {
         userMap[msg.sender] = newUser(msg.sender,userName, greeting);
         return greeting;
     }
@@ -34,5 +34,13 @@ contract StarterHelloContract {
         retUser.userName = _userName;
         retUser.greeting = _greeting;
         return retUser;
+    }
+
+    modifier valueCheck() {
+        require(
+            msg.value >= 0.001 ether,
+            "Amount is less than minimum"
+            );
+            _;
     }
 }
