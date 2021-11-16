@@ -3,9 +3,11 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract StarterHelloContract {
     string helloString;
+    address owner;
     
     constructor (string memory _helloString){
         helloString = _helloString;
+        owner = msg.sender;
     }
     
     function seeHelloString() public view returns(string memory) {
@@ -42,5 +44,15 @@ contract StarterHelloContract {
             "Amount is less than minimum"
             );
             _;
+    }
+
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+    
+     function ownerCollect() public payable {
+        bool sent;
+        (sent, ) = owner.call{value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
     }
 }
