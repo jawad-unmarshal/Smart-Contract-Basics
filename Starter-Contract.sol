@@ -2,17 +2,37 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract StarterHelloContract {
-    string HelloString;
+    string helloString;
     
-    constructor (string memory _helloString) {
-        HelloString = _helloString;
+    constructor (string memory _helloString){
+        helloString = _helloString;
     }
     
     function seeHelloString() public view returns(string memory) {
-        return HelloString;
+        return helloString;
     }
     
     function changeHelloString(string memory _helloString) external {
-        HelloString = _helloString;
+        helloString = _helloString;
+    }
+    
+    struct User {
+        address userAddress;
+        string userName;
+        string greeting;
+    }
+    mapping(address=>User) public userMap;
+    
+    function addGreeting(string memory userName, string memory greeting) external returns (string memory) {
+        userMap[msg.sender] = newUser(msg.sender,userName, greeting);
+        return greeting;
+    }
+    
+    function newUser(address _userAddr, string memory _userName, string memory _greeting) internal pure returns(User memory) {
+        User memory retUser;
+        retUser.userAddress = _userAddr;
+        retUser.userName = _userName;
+        retUser.greeting = _greeting;
+        return retUser;
     }
 }
